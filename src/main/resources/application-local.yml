@@ -2,6 +2,18 @@ server:
   port: 8080
 
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextCredentialsAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextResourceLoaderAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.mail.MailSenderAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.cache.ElastiCacheAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.messaging.MessagingAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.jdbc.AmazonRdsDatabaseAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.metrics.CloudWatchExportAutoConfiguration
   datasource:
     url: ${LOCAL_DB_URL:jdbc:mariadb://localhost:3306/bdbd?allowPublicKeyRetrieval=true&useSSL=false}
     driver-class-name: org.mariadb.jdbc.Driver
