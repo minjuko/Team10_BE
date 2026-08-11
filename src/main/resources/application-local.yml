@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${LOCAL_DB_URL:jdbc:mariadb://localhost:3306/bdbd?allowPublicKeyRetrieval=true&useSSL=false}
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ${LOCAL_DB_USERNAME:bdbd}
+    password: ${LOCAL_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+    open-in-view: false
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ""
+      secretKey: ""
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: ""
+    proxy:
+      host: ""
+      port: 0
+    stack:
+      auto: false
+
+storage:
+  s3:
+    enabled: false
+
+kakao:
+  admin:
+    key: ""
+
+payment:
+  external:
+    enabled: false
+  approval-url: http://localhost:5173/paymentwaiting
+  cancel-url: http://localhost:5173/paymentfail
+  fail-url: http://localhost:5173/paymentfail
+
+frontend:
+  localurl: ${LOCAL_FRONTEND_ORIGIN:http://localhost:5173}
+  prod:
+    userurl: ""
+    ownerurl: ""
+
+security:
+  jwt:
+    secret: ${LOCAL_JWT_SECRET}
+
+logging:
+  level:
+    '[bdbe.bdbd]': INFO

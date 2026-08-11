@@ -54,7 +54,9 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            CorsConfigurationSource corsConfigurationSource) throws Exception {
         // CSRF 해제
         http.csrf().disable();
 
@@ -62,7 +64,7 @@ public class SecurityConfig {
         http.headers().frameOptions().sameOrigin();
 
         // cors 재설정
-        http.cors().configurationSource(configurationSource());
+        http.cors().configurationSource(corsConfigurationSource);
 
         // jSessionId 사용 거부
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

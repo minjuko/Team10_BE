@@ -8,8 +8,8 @@ spring:
   datasource:
     url: ${DATABASE_URL}?allowPublicKeyRetrieval=true&useSSL=false
     driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password: root
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -43,6 +43,8 @@ kakao:
   admin:
     key: ${KAKAOPAY_ADMIN_KEY}
 payment:
+  external:
+    enabled: true
   approval-url: https://k923062c3c512a.user-app.krampoline.com/paymentwaiting
   cancel-url: https://k923062c3c512a.user-app.krampoline.com/paymentfail
   fail-url: https://k923062c3c512a.user-app.krampoline.com/paymentfail
@@ -51,6 +53,14 @@ frontend:
   prod:
     userurl: https://k923062c3c512a.user-app.krampoline.com
     ownerurl: https://kae2e326be433a.user-app.krampoline.com
+
+storage:
+  s3:
+    enabled: true
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
 
 # 파일 저장 경로
 #file:

@@ -3,7 +3,7 @@
 
 # application.yml
 #**/application.yml
-**/application-local.yml
+# application-local.yml contains environment-variable placeholders only and is tracked.
 #**/application-prod.yml
 
 # 빌드, 로컬 설정 파일

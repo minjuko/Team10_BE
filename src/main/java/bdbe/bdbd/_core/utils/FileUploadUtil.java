@@ -25,9 +25,11 @@ public class FileUploadUtil {
 
     private final AmazonS3 s3Client;
     private final String bucketName;
+    private final boolean s3Enabled;
     static final List<String> ALLOWED_EXTENSIONS = Arrays.asList(".jpg", ".jpeg", ".png");
 
     public FileUploadUtil(
+            @Value("${storage.s3.enabled:false}") boolean s3Enabled,
             @Value("${cloud.aws.credentials.accessKey}") String accessKey,
             @Value("${cloud.aws.credentials.secretKey}") String secretKey,
             @Value("${cloud.aws.region.static}") String region,
@@ -35,7 +37,15 @@ public class FileUploadUtil {
             @Value("${cloud.aws.proxy.port}") int proxyPort,
             @Value("${cloud.aws.s3.bucket}") String bucketName) {
 
-        log.info("accessKey:" + accessKey);
+        this.s3Enabled = s3Enabled;
+        this.bucketName = bucketName;
+
+        if (!s3Enabled) {
+            this.s3Client = null;
+            log.info("S3 file upload is disabled for the active profile.");
+            return;
+        }
+
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
         AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
@@ -50,7 +60,6 @@ public class FileUploadUtil {
         }
 
         this.s3Client = builder.build();
-        this.bucketName = bucketName;
     }
 
     public void validateFiles(MultipartFile[] files) throws BadRequestError {
@@ -75,6 +84,12 @@ public class FileUploadUtil {
     }
 
     public String uploadFile(MultipartFile file) throws IOException {
+        if (!s3Enabled) {
+            throw new InternalServerError(
+                    InternalServerError.ErrorCode.INTERNAL_SERVER_ERROR,
+                    Collections.singletonMap("File", "File upload is unavailable in the local profile."));
+        }
+
         validateFiles(new MultipartFile[]{file}); // This will throw BadRequestError if validation fails
 
         String originalFilename = file.getOriginalFilename();

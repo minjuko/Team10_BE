@@ -1,10 +1,8 @@
 package bdbe.bdbd._core.config;
 
 import com.amazonaws.ClientConfiguration;
-import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.util.StringUtils;
 
 @Configuration
+@Profile("prod")
 @Slf4j
 public class AWSConfig {
 
@@ -37,19 +36,6 @@ public class AWSConfig {
     private String bucketName;
 
     @Bean
-    @Profile("!prod")
-    public AmazonS3 amazonS3Client() {
-        log.info("Initializing AmazonS3 client for not 'prod' profile.");
-        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        return AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(region)
-                .build();
-    }
-
-    @Bean
-    @Profile("prod")
     public AmazonS3Client amazonS3ClientProd() {
         log.info("Initializing AmazonS3 client for 'prod' profile.");
 
@@ -66,8 +52,7 @@ public class AWSConfig {
         }
 
         BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        log.info("AWS Credentials: AccessKey = {}, SecretKey is {} characters long.",
-                accessKey, secretKey.length());
+        log.info("AWS credentials configured for S3 client.");
 
         AmazonS3Client amazonS3Client = (AmazonS3Client) AmazonS3ClientBuilder
                 .standard()

@@ -43,6 +43,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PayService {
 
+    @Value("${payment.external.enabled:false}")
+    private boolean externalPaymentEnabled;
+
     @Value("${kakao.admin.key}")
     private String adminKey;
 
@@ -64,6 +67,8 @@ public class PayService {
     private final BayJPARepository bayJPARepository;
 
     public ResponseEntity<?> requestPaymentReady(PayRequest.PayReadyRequestDTO requestDto, ReservationRequest.SaveDTO saveDTO) {
+
+        requireExternalPaymentEnabled();
 
         Long bayId = saveDTO.getBayId();
         Bay bay = bayJPARepository.findById(bayId)
@@ -184,6 +189,8 @@ public class PayService {
             Member member,
             ReservationRequest.SaveDTO saveDTO) {
 
+        requireExternalPaymentEnabled();
+
         Bay bay = bayJPARepository.findById(bayId)
                 .orElseThrow(() -> new NotFoundError(
                         NotFoundError.ErrorCode.RESOURCE_NOT_FOUND,
@@ -233,6 +240,14 @@ public class PayService {
         ReservationResponse.findLatestOneResponseDTO responseDto = reservationService.fetchLatestReservation(reservation.getId());
 
         return ResponseEntity.ok(responseDto);
+    }
+
+    private void requireExternalPaymentEnabled() {
+        if (!externalPaymentEnabled) {
+            throw new InternalServerError(
+                    InternalServerError.ErrorCode.INTERNAL_SERVER_ERROR,
+                    Collections.singletonMap("Payment", "KakaoPay is unavailable in the local profile."));
+        }
     }
 
 }
