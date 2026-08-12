@@ -2,6 +2,7 @@ package bdbe.bdbd;
 
 import bdbe.bdbd.dto.carwash.CarwashRequest;
 import bdbe.bdbd.dto.carwash.CarwashResponse;
+import bdbe.bdbd.dto.member.owner.OwnerResponse;
 import bdbe.bdbd.model.Code.DayType;
 import bdbe.bdbd.model.carwash.Carwash;
 import bdbe.bdbd.model.location.Location;
@@ -28,6 +29,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class LiveIntegrationRegressionTest {
+
+    @Test
+    void memberInfoIncludesAuthenticatedUsersEmail() {
+        Member member = Member.builder().id(102L).username("Portfolio User")
+                .email("test-user@example.com").build();
+
+        OwnerResponse.UserInfoDTO userInfo = new OwnerResponse.UserInfoDTO(member);
+
+        assertThat(userInfo.getEmail()).isEqualTo("test-user@example.com");
+    }
 
     @Test
     void detailDtoIncludesCoordinatesAndRecommendedDtoIncludesReviewCount() {

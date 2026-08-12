@@ -323,10 +323,12 @@ public class OwnerResponse {
     public static class UserInfoDTO {
         private Long id;
         private String name;
+        private String email;
 
         public UserInfoDTO(Member member) {
             this.id = member.getId();
             this.name = member.getUsername();
+            this.email = member.getEmail();
         }
     }
 }
