@@ -31,7 +31,7 @@ public interface ReservationJPARepository extends JpaRepository<Reservation, Lon
 
     List<Reservation> findByMemberIdAndIsDeletedFalse(Long memberId);
 
-    @Query("SELECT r FROM Reservation r JOIN FETCH r.bay b JOIN FETCH b.carwash WHERE r.member.id = :memberId AND r.isDeleted = false")
+    @Query("SELECT r FROM Reservation r JOIN FETCH r.bay b JOIN FETCH b.carwash WHERE r.member.id = :memberId AND r.isDeleted = false AND r.endTime < CURRENT_TIMESTAMP ORDER BY r.endTime DESC")
     List<Reservation> findByMemberIdJoinFetch(@Param("memberId") Long memberId, Pageable pageable);
 
     @Query("SELECT r FROM Reservation r JOIN FETCH r.bay b JOIN FETCH b.carwash c JOIN FETCH r.member u WHERE c.id IN :carwashIds AND FUNCTION('YEAR', r.startTime) = FUNCTION('YEAR', :selectedDate) AND FUNCTION('MONTH', r.startTime) = FUNCTION('MONTH', :selectedDate) AND r.isDeleted = false ORDER BY r.startTime DESC")

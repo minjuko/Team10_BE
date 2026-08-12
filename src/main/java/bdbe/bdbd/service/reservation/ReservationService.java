@@ -68,7 +68,7 @@ public class ReservationService {
                         Collections.singletonMap("ReservationId", "Reservation not found")
                 ));
 
-        if (reservation.getMember().getId() != member.getId())
+        if (!reservation.getMember().getId().equals(member.getId()))
             throw new ForbiddenError(
                     ForbiddenError.ErrorCode.RESOURCE_ACCESS_FORBIDDEN,
                     Collections.singletonMap("MemberId", "Member is not have permission to modify this reservation.")
@@ -101,7 +101,7 @@ public class ReservationService {
                         Collections.singletonMap("ReservationId", "Reservation not found")
                 ));
 
-        if (reservation.getMember().getId() != member.getId())
+        if (!reservation.getMember().getId().equals(member.getId()))
             throw new ForbiddenError(
                     ForbiddenError.ErrorCode.RESOURCE_ACCESS_FORBIDDEN,
                     Collections.singletonMap("MemberId", "Member is not have permission to modify this reservation.")

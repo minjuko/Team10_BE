@@ -98,6 +98,8 @@ public class CarwashResponse {
         public locationDTO toLocationDTO(Location location) {
             locationDTO locationDTO = new locationDTO();
             locationDTO.setAddress(location.getAddress());
+            locationDTO.setLatitude(location.getLatitude());
+            locationDTO.setLongitude(location.getLongitude());
 
             return locationDTO;
         }

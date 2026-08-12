@@ -129,10 +129,11 @@ public class CarwashService {
                     double distance = Haversine.distance(userLocation.getLatitude(), userLocation.getLongitude(),
                             carwash.getLocation().getLatitude(), carwash.getLocation().getLongitude());
                     double rate = carwash.getRate();
+                    long reviewCount = reviewJPARepository.countByCarwash_Id(carwash.getId());
                     int price = carwash.getPrice();
 
                     File file = fileJPARepository.findFirstByCarwashIdAndIsDeletedFalseOrderByUploadedAtAsc(carwash.getId()).orElse(null);
-                    CarwashRequest.CarwashDistanceDTO dto = new CarwashRequest.CarwashDistanceDTO(carwash.getId(), carwash.getName(), carwash.getLocation(), distance, rate, price, file);
+                    CarwashRequest.CarwashDistanceDTO dto = new CarwashRequest.CarwashDistanceDTO(carwash.getId(), carwash.getName(), carwash.getLocation(), distance, rate, reviewCount, price, file);
 
                     return dto;
                 })
@@ -148,10 +149,11 @@ public class CarwashService {
                     double distance = Haversine.distance(userLocation.getLatitude(), userLocation.getLongitude(),
                             carwash.getLocation().getLatitude(), carwash.getLocation().getLongitude());
                     double rate = carwash.getRate();
+                    long reviewCount = reviewJPARepository.countByCarwash_Id(carwash.getId());
                     int price = carwash.getPrice();
 
                     File file = fileJPARepository.findFirstByCarwashIdAndIsDeletedFalseOrderByUploadedAtAsc(carwash.getId()).orElse(null);
-                    CarwashRequest.CarwashDistanceDTO dto = new CarwashRequest.CarwashDistanceDTO(carwash.getId(), carwash.getName(), carwash.getLocation(), distance, rate, price, file);
+                    CarwashRequest.CarwashDistanceDTO dto = new CarwashRequest.CarwashDistanceDTO(carwash.getId(), carwash.getName(), carwash.getLocation(), distance, rate, reviewCount, price, file);
 
                     return dto;
                 })
@@ -191,10 +193,11 @@ public class CarwashService {
                             carwash.getLocation().getLatitude(), carwash.getLocation().getLongitude()
                     );
                     double rate = carwash.getRate();
+                    long reviewCount = reviewJPARepository.countByCarwash_Id(carwash.getId());
                     int price = carwash.getPrice();
 
                     File file = fileJPARepository.findFirstByCarwashIdAndIsDeletedFalseOrderByUploadedAtAsc(carwash.getId()).orElse(null);
-                    CarwashRequest.CarwashDistanceDTO dto = new CarwashRequest.CarwashDistanceDTO(carwash.getId(), carwash.getName(), carwash.getLocation(), distance, rate, price, file);
+                    CarwashRequest.CarwashDistanceDTO dto = new CarwashRequest.CarwashDistanceDTO(carwash.getId(), carwash.getName(), carwash.getLocation(), distance, rate, reviewCount, price, file);
 
                     return dto;
                 })

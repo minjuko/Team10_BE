@@ -156,18 +156,21 @@ public class CarwashRequest {
         @DecimalMax(value = "5.0", message = "The rating cannot exceed 5 points.")
         private double rate;
 
+        private long reviewCount;
+
         @NotNull(message = "Price is required.")
         private Integer price;
 
         @Valid
         private ImageDTO image;
 
-        public CarwashDistanceDTO(Long id, String name, Location location, double distance, double rate, int price, File file) {
+        public CarwashDistanceDTO(Long id, String name, Location location, double distance, double rate, long reviewCount, int price, File file) {
             this.id = id;
             this.name = name;
             this.location = location;
             this.distance = distance;
             this.rate = rate;
+            this.reviewCount = reviewCount;
             this.price = price;
             this.image = (file != null) ? new ImageDTO(file) : null;
         }
