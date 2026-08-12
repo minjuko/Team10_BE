@@ -139,6 +139,13 @@ public class ReservationService {
         LocalTime requestStartTimePart = startTime.toLocalTime();
         LocalTime requestEndTimePart = endTime.toLocalTime();
 
+        if (!endTime.isAfter(startTime)) {
+            throw new BadRequestError(
+                    BadRequestError.ErrorCode.VALIDATION_FAILED,
+                    Collections.singletonMap("datetime", "End time must be after start time.")
+            );
+        }
+
         if (startTime.getMinute() % 30 != 0 || endTime.getMinute() % 30 != 0) {
             throw new BadRequestError(
                     BadRequestError.ErrorCode.VALIDATION_FAILED,
@@ -146,13 +153,7 @@ public class ReservationService {
             );
         }
 
-        // 원래의 endTime을 저장하고 조정된 값을 새 변수에 저장
-        LocalDateTime adjustedEndTime = endTime;
-        if (endTime.toLocalTime().isBefore(startTime.toLocalTime())) {
-            adjustedEndTime = endTime.plusDays(1);
-        }
-
-        long minutesBetween = Duration.between(startTime, adjustedEndTime).toMinutes();
+        long minutesBetween = Duration.between(startTime, endTime).toMinutes();
 
         // 예약 시간에 대한 검증 로직
         if (minutesBetween < 30) {
