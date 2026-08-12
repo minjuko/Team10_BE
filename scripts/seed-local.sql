@@ -42,13 +42,14 @@ INSERT INTO keyword (id, name, type) VALUES
 ON DUPLICATE KEY UPDATE name = VALUES(name), type = VALUES(type);
 
 -- Passwords use Spring Security's DelegatingPasswordEncoder BCrypt format.
--- The clear-text local example value is documented outside this SQL file.
+-- USER is a local-only portfolio account: test-user@example.com / test1234!
+-- Never reuse this public demo credential in shared or production environments.
 INSERT INTO member (id, email, password, role, tel, username) VALUES
     (101, 'portfolio-owner@example.com',
      '{bcrypt}$2a$10$y7/woZaew9KVDgL2LCJ7UOsJkflCBMMmju8XAeL4TzKJrKP9/upT6',
      'ROLE_OWNER', '010-0000-1001', 'Portfolio Owner'),
-    (102, 'portfolio-user@example.com',
-     '{bcrypt}$2a$10$y7/woZaew9KVDgL2LCJ7UOsJkflCBMMmju8XAeL4TzKJrKP9/upT6',
+    (102, 'test-user@example.com',
+     '{bcrypt}$2a$10$zr.GEsRl57PlYdh0eyKSUedpnKhTLNwkLrSfCyCaS89OEm2qAodsW',
      'ROLE_USER', '010-0000-1002', 'Portfolio User');
 
 INSERT INTO location (id, address, latitude, longitude) VALUES
